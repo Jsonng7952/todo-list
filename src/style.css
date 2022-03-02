@@ -1,0 +1,117 @@
+@font-face {
+    font-family: pageFont;
+    src: url('./fonts/SmoochSans-VariableFont_wght.ttf');
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    font-family: pageFont;
+}
+
+header {
+    background-color: #1c1917;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.add-todo-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #808080;
+    cursor: pointer;
+    padding: 0;
+}
+
+.add-todo-btn:hover {
+    color: #ffffff;
+}
+
+#content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+}
+
+#content .sidebar {
+    background-color: #292524;
+    padding: 50px 20px 50px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#content .sidebar-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    border-bottom: 1px solid white;
+}
+
+.add-project-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #808080;
+    cursor: pointer;
+    padding: 0; 
+}
+
+.add-project-btn:hover {
+    color: #ffffff;
+}
+
+.sidebar-heading {
+    display: flex;
+    gap: 10px;
+}
+
+.projects {
+    border: 1px solid white;
+    padding-left: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.project {
+    color: #808080;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.project:hover {
+    color: white;
+}
+
+#content .current-project {
+    background-color: #e7e5e4;
+    padding: 50px;
+}
+
+.current-project-title {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+
+footer {
+    background-color: #1c1917;
+    padding: 10px 20px 10px 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
