@@ -20,23 +20,17 @@ header {
 }
 
 .header-title {
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
     color: #ffffff;
 }
 
-.add-todo-btn {
-    background: none;
+.show-sidebar {
     border: none;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #808080;
+    background: none;
+    color: white;
+    font-size: 3rem;
     cursor: pointer;
-    padding: 0;
-}
-
-.add-todo-btn:hover {
-    color: #ffffff;
 }
 
 #content {
@@ -49,7 +43,8 @@ header {
     padding: 50px 20px 50px 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 #content .sidebar-title {
@@ -60,9 +55,10 @@ header {
 }
 
 .add-project-btn {
+    font-family: pageFont;
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #808080;
     cursor: pointer;
@@ -79,38 +75,101 @@ header {
 }
 
 .projects {
-    border: 1px solid white;
-    padding-left: 5px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    width: 100%;
+    gap: 15px;
 }
 
 .project {
+    padding-left: 5px;
     color: #808080;
-    font-size: 1.3rem;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
 .project:hover {
-    color: white;
+    color: #ffffff;
+}
+
+.project-title {
+    font-size: 1.3rem;
+}
+
+.delete-project-btn {
+    color: #808080;
+    border: none;
+    background: none;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 #content .current-project {
     background-color: #e7e5e4;
     padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;   
 }
 
 .current-project-title {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: bold;
+    border-bottom: 1px solid black;
 }
 
+.tasks {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+}
+
+.task {
+    padding-left: 5px;
+    color: #808080;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task:hover {
+    color: #000000;   
+}
+
+.task-title {
+    font-size: 1.3rem;
+}
+
+.delete-task-btn {
+    border: none;
+    background: none;
+    font-weight: bold;
+    color: #808080;
+    cursor: pointer;
+}
+
+.add-task-btn {
+    font-family: pageFont;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #808080;
+    cursor: pointer;
+    padding: 0;
+}
+
+.add-task-btn:hover {
+    color: #000000;
+}
 
 footer {
     background-color: #1c1917;
     padding: 10px 20px 10px 20px;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
     color: #ffffff;
 }
