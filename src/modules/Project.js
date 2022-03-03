@@ -6,14 +6,20 @@ class Project {
         this.name = name;
     }
 
-    addTask(todo) {
-        this.tasks.push(todo);
+    addTask(task) {
+        this.tasks.push(task);
     }
     
-    deleteTask(todo) {
-        const index = this.tasks.indexOf(todo);
+    deleteTask(task) {
+        const index = this.tasks.indexOf(task);
         if(index > -1) {
             this.tasks.splice(index, 1); 
         }
     }
+
+    getProjectName() {
+        return this.name;
+    }
 }
+
+export default Project;
