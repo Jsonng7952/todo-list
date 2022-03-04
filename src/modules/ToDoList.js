@@ -1,14 +1,19 @@
+import Task from "./Task";
+
 class ToDoList {
 
     static projects = [];
-    static counter = 0;
+    static id = 0;
+    static selectedProject;
 
+    // Add project object into array & DOM
     static addProject(project) {
         this.projects.push(project);
 
         const newProject = document.createElement('div'); 
         newProject.classList.add('project');
-        newProject.addEventListener('click', () => console.log('test'));
+        newProject.dataset.key = this.id;
+        newProject.addEventListener('click', (e) => this.selectProject(e));
 
         const projectTitle = document.createElement('div'); 
         projectTitle.classList.add('project-title');
@@ -18,16 +23,94 @@ class ToDoList {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-project-btn');
         deleteButton.textContent = 'X';
+        deleteButton.addEventListener('click', (e) => this.deleteProject(e));
         newProject.appendChild(deleteButton);
 
         document.querySelector('.projects').appendChild(newProject);
     }
     
-    static deleteProject(project) {
-        const index = this.projects.indexOf(project);
-        if(index > -1) {
+    // Remove project object from array & DOM
+    static deleteProject(e) {
+        const index = this.projects.findIndex(project => project.id === e.target.parentNode.dataset.key);
+        if(index !== -1) {
             this.projects.splice(index, 1); 
         }
+        document.querySelector(`[data-key="${e.target.parentNode.dataset.key}"]`).remove();
+        // If the deleted was a selected project
+        if(e.target.parentNode === this.selectedProject){
+            this.selectedProject = undefined;    
+        }
+    }
+
+    static selectProject(e) {
+        // If there is no selected project
+        if(this.selectedProject === undefined && 
+          (e.target.className === 'project-title' || e.target.className === 'project')) {
+            // Only have the project div saved
+            if(e.target.className === 'project-title') {
+                this.selectedProject = e.target.parentNode; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';
+            }
+            else if(e.target.className === 'project'){
+                this.selectedProject = e.target; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';
+            }   
+        }
+        // Swap selected project
+        else {
+            // Only have the project div saved
+            if(e.target.className === 'project-title') {
+                this.selectedProject.style.fontWeight = 'normal';
+                this.selectedProject.style.color = '#808080';
+
+                this.selectedProject = e.target.parentNode; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';            
+            }
+            else if(e.target.className === 'project'){ 
+                this.selectedProject.style.fontWeight = 'normal';
+                this.selectedProject.style.color = '#808080';
+
+                this.selectedProject = e.target; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff'; 
+            }   
+        }
+
+        this.displayTask()
+    }
+
+    // Selected project will have their task displayed
+    static displayTask() {
+        const index = this.projects.findIndex(project => project.id === this.selectedProject.dataset.key);
+        // Clear all the tasks child nodes
+        const currentTasks = document.querySelector('.tasks');
+        while(currentTasks.firstChild){
+            currentTasks.removeChild(currentTasks.firstChild);
+        }
+        // Change the current-project-title to the selected project's title
+        const currentProjectTitle = document.querySelector('.current-project-title');
+        currentProjectTitle.textContent = `${this.projects[index].getProjectName()}`;
+        // Loop through the array(tasks) in the project object and display it onto DOM
+        this.projects[index].getTasks().forEach(task => {
+
+            const newTask = document.createElement('div'); 
+            newTask.classList.add('task');
+    
+            const taskTitle = document.createElement('div'); 
+            taskTitle.classList.add('task-title');
+            taskTitle.textContent = `${task.getTitle()}`;
+            newTask.appendChild(taskTitle);
+    
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-task-btn');
+            deleteButton.textContent = 'X';
+            newTask.appendChild(deleteButton);
+            
+            currentTasks.appendChild(newTask);
+        });
     }
 }
 
