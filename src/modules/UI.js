@@ -50,7 +50,6 @@ class UI {
         addProjectBtn.classList.add('add-project-btn');
         addProjectBtn.textContent = '+ Add Project';
         addProjectBtn.addEventListener('click', () => this.createProject());
-
         sidebar.appendChild(addProjectBtn);
 
         return sidebar;
@@ -58,8 +57,9 @@ class UI {
 
     // Create the project in the DOM
     static createProject() {
-        let project = new Project('p1');
+        let project = new Project(`Project ${ToDoList.id}`, `${ToDoList.id}`);
         ToDoList.addProject(project);
+        ToDoList.id++;
     }
 
     static currentProject() {
@@ -78,9 +78,22 @@ class UI {
         const addTaskBtn = document.createElement('button');
         addTaskBtn.classList.add('add-task-btn');
         addTaskBtn.textContent = '+ Add Task';
+        addTaskBtn.addEventListener('click', () => this.createTask());
         currentProject.appendChild(addTaskBtn);
 
         return currentProject;
+    }
+
+    // Create the task in the DOM
+    static createTask() {
+        if(ToDoList.selectedProject !== undefined) {
+            let task = new Task(`Title`, `Description`, `Duedate`, `Priority`);
+            // 1. Keep track of the current selected project to get the reference. 
+            // 2. Find the project in the ToDoList Array.
+            // 3. Add the task into the project object. 
+            const index = ToDoList.projects.findIndex(project => project.id === ToDoList.selectedProject.dataset.key);
+            ToDoList.projects[index].addTask(task);           
+        }
     }
 
     static footer() {
