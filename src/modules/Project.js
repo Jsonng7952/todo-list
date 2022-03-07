@@ -3,9 +3,9 @@ class Project {
     tasks = [];
     id = 0;
 
-    constructor(name, id) {
+    constructor(name, key) {
         this.name = name;
-        this.id = id;
+        this.key = key;
     }
 
     addTask(task) {
@@ -13,7 +13,8 @@ class Project {
 
         const newTask = document.createElement('div'); 
         newTask.classList.add('task');
-        newTask.dataset.key = this.id;
+        newTask.dataset.key = this.key;
+        newTask.dataset.id = this.id;
 
         const taskTitle = document.createElement('div'); 
         taskTitle.classList.add('task-title');
@@ -23,24 +24,27 @@ class Project {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-task-btn');
         deleteButton.textContent = 'X';
+        deleteButton.addEventListener('click', (e) => this.deleteTask(e));
         newTask.appendChild(deleteButton);
 
         document.querySelector('.tasks').appendChild(newTask);
+        this.id++;
     }
     
-    deleteTask(task) {
-        const index = this.tasks.indexOf(task);
-        if(index > -1) {
+    deleteTask(e) {
+        const index = e.target.parentNode.dataset.id;
+        if(index !== undefined) {
             this.tasks.splice(index, 1); 
         }
+        document.querySelector(`.task[data-id="${e.target.parentNode.dataset.id}"]`).remove();
     }
 
     getProjectName() {
         return this.name;
     }
 
-    getId() {
-        return this.id;
+    getKey() {
+        return this.key;
     }
 
     getTasks() {
