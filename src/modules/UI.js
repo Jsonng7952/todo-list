@@ -49,17 +49,68 @@ class UI {
         const addProjectBtn = document.createElement('button');
         addProjectBtn.classList.add('add-project-btn');
         addProjectBtn.textContent = '+ Add Project';
-        addProjectBtn.addEventListener('click', () => this.createProject());
+        addProjectBtn.addEventListener('click', () => this.showProjectForm());
         sidebar.appendChild(addProjectBtn);
+
+        const projectFormContainer = document.createElement('div');
+        projectFormContainer.classList.add('project-form-container');
+        const projectForm = document.createElement('div');
+        projectForm.classList.add('project-form');
+        const projectInput = document.createElement('input');
+        projectInput.type = 'text';
+        projectInput.id = 'p-title';
+        projectInput.placeholder = 'Project Title';
+        projectForm.appendChild(projectInput);
+        projectFormContainer.appendChild(projectForm);
+
+        const projectFormBtns = document.createElement('div');
+        projectFormBtns.classList.add('project-form-btns');
+        const submitBtn = document.createElement('button');
+        submitBtn.classList.add('submit-btn');
+        submitBtn.textContent = 'SUBMIT';
+        submitBtn.addEventListener('click', () => this.submitProjectForm());
+        const cancelBtn = document.createElement('button');
+        cancelBtn.classList.add('cancel-btn');
+        cancelBtn.textContent = 'CANCEL';
+        cancelBtn.addEventListener('click', () => this.hideProjectForm());
+        projectFormBtns.appendChild(submitBtn);
+        projectFormBtns.appendChild(cancelBtn);
+        projectFormContainer.appendChild(projectFormBtns);
+
+        projectFormContainer.style.display = 'none';
+
+        sidebar.appendChild(projectFormContainer);
 
         return sidebar;
     }
+    
+    // Hide add project button and display project form
+    static showProjectForm() {
+        const addProjectBtn = document.querySelector('.add-project-btn');
+        addProjectBtn.style.display = 'none';
 
-    // Create the project in the DOM
-    static createProject() {
-        let project = new Project(`Project ${ToDoList.id}`, `${ToDoList.id}`);
-        ToDoList.addProject(project);
-        ToDoList.id++;
+        const projectFormContainer = document.querySelector('.project-form-container');
+        projectFormContainer.style.display = 'flex';
+    }
+
+    // Display add project button and hide project form
+    static hideProjectForm() {
+        const addProjectBtn = document.querySelector('.add-project-btn');
+        addProjectBtn.style.display = 'inline-block';
+
+        const projectFormContainer = document.querySelector('.project-form-container');
+        projectFormContainer.style.display = 'none';
+    }
+
+    static submitProjectForm() {
+        const projectFormValue = document.querySelector('#p-title').value;
+        if(projectFormValue !== ''){
+            let project = new Project(`${projectFormValue}`, `${ToDoList.key}`);
+            ToDoList.addProject(project);
+
+            document.querySelector('#p-title').value = '';
+            this.hideProjectForm();            
+        }
     }
 
     static currentProject() {
@@ -68,7 +119,7 @@ class UI {
 
         const currentProjectTitle = document.createElement('div');
         currentProjectTitle.classList.add('current-project-title');
-        currentProjectTitle.textContent = 'Current Project Title';
+        currentProjectTitle.style.display = 'none';
         currentProject.appendChild(currentProjectTitle);
  
         const tasks = document.createElement('div');
@@ -78,21 +129,69 @@ class UI {
         const addTaskBtn = document.createElement('button');
         addTaskBtn.classList.add('add-task-btn');
         addTaskBtn.textContent = '+ Add Task';
-        addTaskBtn.addEventListener('click', () => this.createTask());
+        addTaskBtn.style.display = 'none';
+        addTaskBtn.addEventListener('click', () => this.showTaskForm());
         currentProject.appendChild(addTaskBtn);
+
+        const taskFormContainer = document.createElement('div');
+        taskFormContainer.classList.add('task-form-container');
+        const taskForm = document.createElement('div');
+        taskForm.classList.add('task-form');
+        const taskInput = document.createElement('input');
+        taskInput.type = 'text';
+        taskInput.id = 't-title';
+        taskInput.placeholder = 'Task Title';
+        taskForm.appendChild(taskInput);
+        taskFormContainer.appendChild(taskForm);
+
+        const taskFormBtns = document.createElement('div');
+        taskFormBtns.classList.add('task-form-btns');
+        const submitBtn = document.createElement('button');
+        submitBtn.classList.add('submit-btn');
+        submitBtn.textContent = 'SUBMIT';
+        submitBtn.addEventListener('click', () => this.submitTaskForm());
+        const cancelBtn = document.createElement('button');
+        cancelBtn.classList.add('cancel-btn');
+        cancelBtn.textContent = 'CANCEL';
+        cancelBtn.addEventListener('click', () => this.hideTaskForm());
+        taskFormBtns.appendChild(submitBtn);
+        taskFormBtns.appendChild(cancelBtn);
+        taskFormContainer.appendChild(taskFormBtns);
+
+        taskFormContainer.style.display = 'none';
+
+        currentProject.appendChild(taskFormContainer);
 
         return currentProject;
     }
 
-    // Create the task in the DOM
-    static createTask() {
+    static showTaskForm() {
+        const addTaskBtn = document.querySelector('.add-task-btn');
+        addTaskBtn.style.display = 'none';
+
+        const taskFormContainer = document.querySelector('.task-form-container');
+        taskFormContainer.style.display = 'flex';
+
+    }
+
+    static hideTaskForm() {
+        const addTaskBtn = document.querySelector('.add-task-btn');
+        addTaskBtn.style.display = 'inline-block';
+
+        const taskFormContainer = document.querySelector('.task-form-container');
+        taskFormContainer.style.display = 'none';
+    }
+
+    static submitTaskForm() {
         if(ToDoList.selectedProject !== undefined) {
-            let task = new Task(`Title`, `Description`, `Duedate`, `Priority`);
-            // 1. Keep track of the current selected project to get the reference. 
-            // 2. Find the project in the ToDoList Array.
-            // 3. Add the task into the project object. 
-            const index = ToDoList.projects.findIndex(project => project.id === ToDoList.selectedProject.dataset.key);
-            ToDoList.projects[index].addTask(task);           
+            const index = ToDoList.projects.findIndex(project => project.key === ToDoList.selectedProject.dataset.key);
+            const taskFormValue = document.querySelector('#t-title').value;
+
+            let task = new Task(`${taskFormValue}`, `Description`, `Duedate`, `Priority`);
+            ToDoList.projects[index].addTask(task);  
+
+            document.querySelector('#t-title').value = '';
+            this.hideTaskForm();   
         }
     }
 
