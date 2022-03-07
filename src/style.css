@@ -105,6 +105,42 @@ header {
     cursor: pointer;
 }
 
+.project-form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#p-title {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.3rem;
+    padding: 10px 15px;
+    font-family: pageFont;
+}
+
+.project-form-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.project-form-btns button {
+    background-color: #808080;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    font-family: pageFont;
+    cursor: pointer;
+}
+
+.project-form-btns button:hover {
+    background-color: #ffffff;
+}
+
 #content .current-project {
     background-color: #e7e5e4;
     padding: 50px;
@@ -164,6 +200,42 @@ header {
 
 .add-task-btn:hover {
     color: #000000;
+}
+
+.task-form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#t-title {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.3rem;
+    padding: 10px 15px;
+    font-family: pageFont;
+}
+
+.task-form-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.task-form-btns button {
+    background-color: #808080;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    font-family: pageFont;
+    cursor: pointer;
+}
+
+.task-form-btns button:hover {
+    background-color: #ffffff;
 }
 
 footer {
