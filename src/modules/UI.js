@@ -32,18 +32,26 @@ class UI {
         const sidebar = document.createElement('div');
         sidebar.classList.add('sidebar');
 
+        const defaultProject = document.createElement('div');
+        defaultProject.classList.add('project');
+        defaultProject.addEventListener('click', (e) => ToDoList.selectProject(e));
+        const defaultProjectTitle = document.createElement('div');
+        defaultProjectTitle.classList.add('project-title');
+        defaultProjectTitle.textContent = 'Home';
+        defaultProject.appendChild(defaultProjectTitle);
+        sidebar.appendChild(defaultProject);
+
         const sidebarHeading = document.createElement('div');
         sidebarHeading.classList.add('sidebar-heading');
-
         const sidebarTitle = document.createElement('div');
         sidebarTitle.classList.add('sidebar-title');
         sidebarTitle.textContent = 'Projects';
-
         sidebarHeading.appendChild(sidebarTitle);
         sidebar.appendChild(sidebarHeading);
 
         const projects = document.createElement('div');
         projects.classList.add('projects');
+
         sidebar.appendChild(projects);
 
         const addProjectBtn = document.createElement('button');
@@ -86,11 +94,19 @@ class UI {
     
     // Hide add project button and display project form
     static showProjectForm() {
+
+        const taskFormContainer = document.querySelector('.task-form-container');
+        if(taskFormContainer.style.display === 'flex') {
+            this.hideTaskForm();
+        }
+
         const addProjectBtn = document.querySelector('.add-project-btn');
         addProjectBtn.style.display = 'none';
 
         const projectFormContainer = document.querySelector('.project-form-container');
         projectFormContainer.style.display = 'flex';
+
+        window.addEventListener('keydown', (e) => console.log(e.keyCode));
     }
 
     // Display add project button and hide project form
@@ -104,9 +120,12 @@ class UI {
 
     static submitProjectForm() {
         const projectFormValue = document.querySelector('#p-title').value;
-        if(projectFormValue !== ''){
+        if(projectFormValue !== '' && localStorage.getItem(`${projectFormValue}`) === null) {
             let project = new Project(`${projectFormValue}`, `${ToDoList.key}`);
             ToDoList.addProject(project);
+
+            // Adds the project into local storage
+            localStorage.setItem(`${project.getKey()}`, JSON.stringify(project));
 
             document.querySelector('#p-title').value = '';
             this.hideProjectForm();            
@@ -119,7 +138,8 @@ class UI {
 
         const currentProjectTitle = document.createElement('div');
         currentProjectTitle.classList.add('current-project-title');
-        currentProjectTitle.style.display = 'none';
+        currentProjectTitle.textContent = 'Home';
+        currentProjectTitle.style.display = 'block';
         currentProject.appendChild(currentProjectTitle);
  
         const tasks = document.createElement('div');
@@ -166,12 +186,17 @@ class UI {
     }
 
     static showTaskForm() {
+
+        const projectFormContainer = document.querySelector('.project-form-container');
+        if(projectFormContainer.style.display === 'flex') {
+            this.hideProjectForm();
+        }
+
         const addTaskBtn = document.querySelector('.add-task-btn');
         addTaskBtn.style.display = 'none';
 
         const taskFormContainer = document.querySelector('.task-form-container');
         taskFormContainer.style.display = 'flex';
-
     }
 
     static hideTaskForm() {
@@ -187,8 +212,14 @@ class UI {
             const index = ToDoList.projects.findIndex(project => project.key === ToDoList.selectedProject.dataset.key);
             const taskFormValue = document.querySelector('#t-title').value;
 
-            let task = new Task(`${taskFormValue}`, `Description`, `Duedate`, `Priority`);
-            ToDoList.projects[index].addTask(task);  
+            let task = new Task(`${taskFormValue}`);
+
+            let getProject = JSON.parse(localStorage.getItem(`${ToDoList.selectedProject.dataset.key}`));
+            if(getProject !== null) {
+                let newProject = Object.assign(new Project(), getProject);
+                newProject.addTask(task);
+                localStorage.setItem(`${ToDoList.selectedProject.dataset.key}`, JSON.stringify(newProject));
+            }
 
             document.querySelector('#t-title').value = '';
             this.hideTaskForm();   
@@ -200,6 +231,33 @@ class UI {
         footer.textContent = 'Todo List';
 
         return footer;
+    }
+
+    static loadStorage() {
+        // Sort the project keys before displaying
+        let sortedStorage = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            sortedStorage.push(localStorage.key(i));
+        }
+        sortedStorage.sort();
+
+        for (let i = 0; i < sortedStorage.length; i++) {
+            let key = sortedStorage[i];
+            let value = localStorage.getItem(key);
+
+            let getProject = JSON.parse(value);
+            let newProject = Object.assign(new Project(), getProject);
+
+            // Update data-key in order to keep track of localStorage projects. 
+            ToDoList.key = newProject.getKey();
+            ToDoList.addProject(newProject);         
+
+            newProject.getTasks().forEach(task => {
+                let newTask = Object.assign(new Task(), task);
+                newProject.loadTask(newTask);
+            })
+            
+        }
     }
 
 }

@@ -1,3 +1,5 @@
+import UI from "./UI";
+import Project from "./Project";
 import Task from "./Task";
 
 class ToDoList {
@@ -35,7 +37,9 @@ class ToDoList {
     static deleteProject(e) {
         const index = this.projects.findIndex(project => project.key === e.target.parentNode.dataset.key);
         if(index !== -1) {
+            // Remove from array using index, remove from localStorage using data-key
             this.projects.splice(index, 1); 
+            localStorage.removeItem(`${e.target.parentNode.dataset.key}`);
         }
         // Remove project from sidebar
         document.querySelector(`.project[data-key="${e.target.parentNode.dataset.key}"]`).remove();
@@ -64,8 +68,55 @@ class ToDoList {
 
     // Highlights the selected task and display it to the DOM.
     static selectProject(e) {
+        const taskFormContainer = document.querySelector('.task-form-container');
+        const projectFormContainer = document.querySelector('.project-form-container');
+        if(taskFormContainer.style.display === 'flex') {
+            UI.hideTaskForm();
+        }
+        else if(projectFormContainer.style.display === 'flex') {
+            UI.hideProjectForm();
+        }
+
+        if(e.target.textContent === 'Home') {
+
+            if(this.selectedProject !== undefined && this.selectedProject.textContent !== 'Home') {
+                this.selectedProject.style.fontWeight = 'normal';
+                this.selectedProject.style.color = '#808080';
+
+                this.selectedProject = e.target.parentNode; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';
+
+                const currentProjectTitle = document.querySelector('.current-project-title');
+                currentProjectTitle.textContent = 'Home';
+                currentProjectTitle.style.display = 'block';
+                const addTaskBtn = document.querySelector('.add-task-btn');
+                addTaskBtn.style.display = 'none';
+
+                const tasks = document.querySelector('.tasks');
+                tasks.childNodes.forEach(task => {
+                    task.style.display = 'flex';
+                });                
+            }
+            else {
+                this.selectedProject = e.target.parentNode; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';
+
+                const currentProjectTitle = document.querySelector('.current-project-title');
+                currentProjectTitle.textContent = 'Home';
+                currentProjectTitle.style.display = 'block';
+                const addTaskBtn = document.querySelector('.add-task-btn');
+                addTaskBtn.style.display = 'none';
+
+                const tasks = document.querySelector('.tasks');
+                tasks.childNodes.forEach(task => {
+                    task.style.display = 'flex';
+                });           
+            }
+        }
         // If there is no selected project
-        if(this.selectedProject === undefined && 
+        else if(this.selectedProject === undefined && 
           (e.target.className === 'project-title' || e.target.className === 'project')) {
             // Only have the project div saved
             if(e.target.className === 'project-title') {
