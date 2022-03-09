@@ -28,12 +28,13 @@ header {
 .show-sidebar {
     border: none;
     background: none;
-    color: white;
+    color: #ffffff;
     font-size: 3rem;
     cursor: pointer;
 }
 
 #content {
+    background-color: #e7e5e4;
     display: grid;
     grid-template-columns: 300px 1fr;
 }
@@ -58,7 +59,7 @@ header {
     font-family: pageFont;
     background: none;
     border: none;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #808080;
     cursor: pointer;
@@ -94,7 +95,7 @@ header {
 }
 
 .project-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .delete-project-btn {
@@ -176,7 +177,7 @@ header {
 }
 
 .task-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .delete-task-btn {
@@ -191,7 +192,7 @@ header {
     font-family: pageFont;
     background: none;
     border: none;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #808080;
     cursor: pointer;
