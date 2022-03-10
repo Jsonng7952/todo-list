@@ -132,7 +132,7 @@ class UI {
 
     static submitProjectForm() {
         const projectFormValue = document.querySelector('#p-title').value;
-        if(projectFormValue !== '' && localStorage.getItem(`${projectFormValue}`) === null) {
+        if(projectFormValue !== '' && projectFormValue !== 'Home') {
             let project = new Project(`${projectFormValue}`, `${ToDoList.key}`);
             ToDoList.addProject(project);
 
@@ -226,9 +226,8 @@ class UI {
     }
 
     static submitTaskForm() {
-        if(ToDoList.selectedProject !== undefined) {
-            const taskFormValue = document.querySelector('#t-title').value;
-
+        const taskFormValue = document.querySelector('#t-title').value;
+        if(ToDoList.selectedProject !== undefined && taskFormValue !== '') {
             let task = new Task(`${taskFormValue}`);
 
             let getProject = JSON.parse(localStorage.getItem(`${ToDoList.selectedProject.dataset.key}`));
