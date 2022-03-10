@@ -38,6 +38,9 @@ class UI {
         const defaultProjectTitle = document.createElement('div');
         defaultProjectTitle.classList.add('project-title');
         defaultProjectTitle.textContent = 'Home';
+        defaultProjectTitle.style.fontWeight = 'bold';
+        defaultProjectTitle.style.color = '#ffffff';
+        ToDoList.selectedProject = defaultProjectTitle;
         defaultProject.appendChild(defaultProjectTitle);
         sidebar.appendChild(defaultProject);
 
@@ -68,6 +71,7 @@ class UI {
         projectInput.type = 'text';
         projectInput.id = 'p-title';
         projectInput.placeholder = 'Project Title';
+        projectInput.addEventListener('keyup', (e) => this.keyPress(e));
         projectForm.appendChild(projectInput);
         projectFormContainer.appendChild(projectForm);
 
@@ -91,6 +95,15 @@ class UI {
 
         return sidebar;
     }
+
+    static keyPress(e) {
+        if(e.keyCode === 13 && e.target.id === 'p-title') {
+            this.submitProjectForm();
+        }
+        else if(e.keyCode === 13 && e.target.id === 't-title') {
+            this.submitTaskForm();
+        }
+    }
     
     // Hide add project button and display project form
     static showProjectForm() {
@@ -106,7 +119,6 @@ class UI {
         const projectFormContainer = document.querySelector('.project-form-container');
         projectFormContainer.style.display = 'flex';
 
-        window.addEventListener('keydown', (e) => console.log(e.keyCode));
     }
 
     // Display add project button and hide project form
@@ -133,6 +145,10 @@ class UI {
     }
 
     static currentProject() {
+
+        const currentProjectContainer = document.createElement('div');
+        currentProjectContainer.classList.add('current-project-container');
+
         const currentProject = document.createElement('div');
         currentProject.classList.add('current-project');
 
@@ -161,6 +177,7 @@ class UI {
         taskInput.type = 'text';
         taskInput.id = 't-title';
         taskInput.placeholder = 'Task Title';
+        taskInput.addEventListener('keyup', (e) => this.keyPress(e));
         taskForm.appendChild(taskInput);
         taskFormContainer.appendChild(taskForm);
 
@@ -181,8 +198,9 @@ class UI {
         taskFormContainer.style.display = 'none';
 
         currentProject.appendChild(taskFormContainer);
+        currentProjectContainer.appendChild(currentProject);
 
-        return currentProject;
+        return currentProjectContainer;
     }
 
     static showTaskForm() {
@@ -209,7 +227,6 @@ class UI {
 
     static submitTaskForm() {
         if(ToDoList.selectedProject !== undefined) {
-            const index = ToDoList.projects.findIndex(project => project.key === ToDoList.selectedProject.dataset.key);
             const taskFormValue = document.querySelector('#t-title').value;
 
             let task = new Task(`${taskFormValue}`);
