@@ -1,6 +1,4 @@
 import UI from "./UI";
-import Project from "./Project";
-import Task from "./Task";
 
 class ToDoList {
 
@@ -30,7 +28,6 @@ class ToDoList {
 
         document.querySelector('.projects').appendChild(newProject);
         this.key++;
-        console.log(this.projects);
     }
     
     // Remove project object from array & DOM
@@ -68,6 +65,7 @@ class ToDoList {
 
     // Highlights the selected task and display it to the DOM.
     static selectProject(e) {
+        // Hide any forms when selecting a different project.
         const taskFormContainer = document.querySelector('.task-form-container');
         const projectFormContainer = document.querySelector('.project-form-container');
         if(taskFormContainer.style.display === 'flex') {
@@ -78,15 +76,16 @@ class ToDoList {
         }
 
         if(e.target.textContent === 'Home') {
-
+            // Deselect the previous project and select the home project.
             if(this.selectedProject !== undefined && this.selectedProject.textContent !== 'Home') {
                 this.selectedProject.style.fontWeight = 'normal';
                 this.selectedProject.style.color = '#808080';
 
-                this.selectedProject = e.target.parentNode; 
+                this.selectedProject = e.target; 
                 this.selectedProject.style.fontWeight = 'bold';
                 this.selectedProject.style.color = '#ffffff';
 
+                // Display all task
                 const currentProjectTitle = document.querySelector('.current-project-title');
                 currentProjectTitle.textContent = 'Home';
                 currentProjectTitle.style.display = 'block';
@@ -98,74 +97,32 @@ class ToDoList {
                     task.style.display = 'flex';
                 });                
             }
-            else {
-                this.selectedProject = e.target.parentNode; 
-                this.selectedProject.style.fontWeight = 'bold';
-                this.selectedProject.style.color = '#ffffff';
-
-                const currentProjectTitle = document.querySelector('.current-project-title');
-                currentProjectTitle.textContent = 'Home';
-                currentProjectTitle.style.display = 'block';
-                const addTaskBtn = document.querySelector('.add-task-btn');
-                addTaskBtn.style.display = 'none';
-
-                const tasks = document.querySelector('.tasks');
-                tasks.childNodes.forEach(task => {
-                    task.style.display = 'flex';
-                });           
-            }
         }
-        // If there is no selected project
-        else if(this.selectedProject === undefined && 
-          (e.target.className === 'project-title' || e.target.className === 'project')) {
-            // Only have the project div saved
-            if(e.target.className === 'project-title') {
-                this.selectedProject = e.target.parentNode; 
-                this.selectedProject.style.fontWeight = 'bold';
-                this.selectedProject.style.color = '#ffffff';
+        else if(e.target.className === 'project-title') {
+            this.selectedProject.style.fontWeight = 'normal';
+            this.selectedProject.style.color = '#808080';
 
-                document.querySelector('.current-project-title').style.display = 'block';
-                document.querySelector('.add-task-btn').style.display = 'inline-block';
-                this.displayTask()
-            }
-            else if(e.target.className === 'project'){
-                this.selectedProject = e.target; 
-                this.selectedProject.style.fontWeight = 'bold';
-                this.selectedProject.style.color = '#ffffff';
-
-                document.querySelector('.current-project-title').style.display = 'block';
-                document.querySelector('.add-task-btn').style.display = 'inline-block';
-                this.displayTask()
-            }   
-        }
-        // Swap selected project
-        else {
-            // Only have the project div saved
-            if(e.target.className === 'project-title') {
-                this.selectedProject.style.fontWeight = 'normal';
-                this.selectedProject.style.color = '#808080';
-
-                this.selectedProject = e.target.parentNode; 
-                this.selectedProject.style.fontWeight = 'bold';
-                this.selectedProject.style.color = '#ffffff';      
+            this.selectedProject = e.target.parentNode; 
+            this.selectedProject.style.fontWeight = 'bold';
+            this.selectedProject.style.color = '#ffffff';      
                 
-                document.querySelector('.current-project-title').style.display = 'block';
-                document.querySelector('.add-task-btn').style.display = 'inline-block';
-                this.displayTask()
-            }
-            else if(e.target.className === 'project'){ 
-                this.selectedProject.style.fontWeight = 'normal';
-                this.selectedProject.style.color = '#808080';
-
-                this.selectedProject = e.target; 
-                this.selectedProject.style.fontWeight = 'bold';
-                this.selectedProject.style.color = '#ffffff'; 
-
-                document.querySelector('.current-project-title').style.display = 'block';
-                document.querySelector('.add-task-btn').style.display = 'inline-block';
-                this.displayTask()
-            }   
+            document.querySelector('.current-project-title').style.display = 'block';
+            document.querySelector('.add-task-btn').style.display = 'inline-block';
+            this.displayTask()
         }
+        else if(e.target.className === 'project'){ 
+            this.selectedProject.style.fontWeight = 'normal';
+            this.selectedProject.style.color = '#808080';
+
+            this.selectedProject = e.target; 
+            this.selectedProject.style.fontWeight = 'bold';
+            this.selectedProject.style.color = '#ffffff'; 
+
+            document.querySelector('.current-project-title').style.display = 'block';
+            document.querySelector('.add-task-btn').style.display = 'inline-block';
+            this.displayTask()
+        }   
+        
     }
 
     // Selected project will have their task displayed
