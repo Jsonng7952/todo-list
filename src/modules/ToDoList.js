@@ -61,6 +61,7 @@ class ToDoList {
             document.querySelector('.current-project-title').style.display = 'none';
             document.querySelector('.add-task-btn').style.display = 'none';
         }
+        console.log(this.selectedProject);
     }
 
     // Highlights the selected task and display it to the DOM.
@@ -97,8 +98,35 @@ class ToDoList {
                     task.style.display = 'flex';
                 });                
             }
+            else { // If home project is selected, and there is no selected project.
+                this.selectedProject = e.target; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';
+
+                // Display all task
+                const currentProjectTitle = document.querySelector('.current-project-title');
+                currentProjectTitle.textContent = 'Home';
+                currentProjectTitle.style.display = 'block';
+                const addTaskBtn = document.querySelector('.add-task-btn');
+                addTaskBtn.style.display = 'none';
+
+                const tasks = document.querySelector('.tasks');
+                tasks.childNodes.forEach(task => {
+                    task.style.display = 'flex';
+                }); 
+            }
         }
         else if(e.target.className === 'project-title') {
+            if(this.selectedProject === undefined) {
+                this.selectedProject = e.target.parentNode; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff';      
+                    
+                document.querySelector('.current-project-title').style.display = 'block';
+                document.querySelector('.add-task-btn').style.display = 'inline-block';
+                this.displayTask()
+            }
+            else {
             this.selectedProject.style.fontWeight = 'normal';
             this.selectedProject.style.color = '#808080';
 
@@ -108,21 +136,32 @@ class ToDoList {
                 
             document.querySelector('.current-project-title').style.display = 'block';
             document.querySelector('.add-task-btn').style.display = 'inline-block';
-            this.displayTask()
+            this.displayTask()                
+            }
         }
         else if(e.target.className === 'project'){ 
-            this.selectedProject.style.fontWeight = 'normal';
-            this.selectedProject.style.color = '#808080';
+            if(this.selectedProject === undefined) {
+                this.selectedProject = e.target; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff'; 
+    
+                document.querySelector('.current-project-title').style.display = 'block';
+                document.querySelector('.add-task-btn').style.display = 'inline-block';
+                this.displayTask()
+            }
+            else {
+                this.selectedProject.style.fontWeight = 'normal';
+                this.selectedProject.style.color = '#808080';
 
-            this.selectedProject = e.target; 
-            this.selectedProject.style.fontWeight = 'bold';
-            this.selectedProject.style.color = '#ffffff'; 
+                this.selectedProject = e.target; 
+                this.selectedProject.style.fontWeight = 'bold';
+                this.selectedProject.style.color = '#ffffff'; 
 
-            document.querySelector('.current-project-title').style.display = 'block';
-            document.querySelector('.add-task-btn').style.display = 'inline-block';
-            this.displayTask()
+                document.querySelector('.current-project-title').style.display = 'block';
+                document.querySelector('.add-task-btn').style.display = 'inline-block';
+                this.displayTask()                
+            }
         }   
-        
     }
 
     // Selected project will have their task displayed
